@@ -1,16 +1,15 @@
 package com.roze.book_recommendation_app.persistance;
 
-import com.roze.book_recommendation_app.persistance.entity.Book;
 import com.roze.book_recommendation_app.persistance.entity.Comment;
-import com.roze.book_recommendation_app.persistance.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    List<Comment> findByBook(Book book);
-    List<Comment> findByUser(User user);
+    List<Comment> findByBookId(Long bookId);
+    List<Comment> findByUserId(UUID userId);
 }

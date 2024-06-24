@@ -13,6 +13,10 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 @Service
 public class CommentService {
 
@@ -41,5 +45,24 @@ public class CommentService {
         Comment savedComment = commentRepository.save(commentToSave);
 
         return commentMapper.commentToResponse(savedComment);
+    }
+
+    public List<CommentResponse> findCommentsByBook(Long id) {
+        return commentRepository.findByBookId(id).stream()
+                .map(comment -> commentMapper.commentToResponse(comment))
+                .collect(Collectors.toList());
+    }
+
+    public List<CommentResponse> findCommentsByUser(UUID id) {
+        return commentRepository.findByUserId(id).stream()
+                .map(comment -> commentMapper.commentToResponse(comment))
+                .collect(Collectors.toList());
+    }
+
+    public void deleteCommentById(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found by ID: " + id));
+
+        commentRepository.delete(comment);
     }
 }
