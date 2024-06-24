@@ -2,7 +2,6 @@ package com.roze.book_recommendation_app.security.service;
 
 import com.roze.book_recommendation_app.dto.request.UserRequest;
 import com.roze.book_recommendation_app.dto.response.UserResponse;
-
 import com.roze.book_recommendation_app.exception.UserAlreadyExist;
 import com.roze.book_recommendation_app.mapper.UserMapper;
 import com.roze.book_recommendation_app.persistance.UserRepository;
@@ -11,7 +10,6 @@ import com.roze.book_recommendation_app.security.mapper.SecurityUserDetailsMappe
 import com.roze.book_recommendation_app.security.model.AuthenticationRequest;
 import com.roze.book_recommendation_app.security.model.AuthenticationResponse;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

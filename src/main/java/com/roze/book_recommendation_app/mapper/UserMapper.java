@@ -18,7 +18,7 @@ public class UserMapper {
 
     public UserResponse userToUserResponse(User user) {
         return UserResponse.builder()
-                .uuid(user.getUuid())
+                .uuid(user.getId())
                 .name(user.getName())
                 .surname(user.getSurname())
                 .email(user.getEmail())

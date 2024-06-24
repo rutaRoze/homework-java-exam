@@ -9,7 +9,7 @@ public class SecurityUserDetailsMapper {
 
     public SecurityUserDetails mapToSecurityUserDetails(User userEntity) {
         return SecurityUserDetails.builder()
-                .uuid(userEntity.getUuid())
+                .uuid(userEntity.getId())
                 .email(userEntity.getEmail())
                 .password(userEntity.getPassword())
                 .role(userEntity.getRole())
