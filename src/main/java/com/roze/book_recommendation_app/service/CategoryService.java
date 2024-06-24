@@ -14,14 +14,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class CategoryService {
 
-    @Autowired
     CategoryRepository categoryRepository;
-    @Autowired
     CategoryMapper categoryMapper;
+
+    @Autowired
+    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+        this.categoryRepository = categoryRepository;
+        this.categoryMapper = categoryMapper;
+    }
 
     public CategoryResponse saveCategory(CategoryRequest categoryRequest) {
         if (checkIfCategoryExists(categoryRequest.getName())) {
-            throw new CategoryAlreadyExist(String.format("Category %s already exists", categoryRequest.getName()));
+            throw new CategoryAlreadyExist(String.format("Category by name %s already exists", categoryRequest.getName()));
         }
 
         Category categoryToSave = categoryMapper.categoryRequestToCategory(categoryRequest);
@@ -41,7 +45,7 @@ public class CategoryService {
         Category existingCategory = getCategoryByIdOrThrow(id);
 
         if (isDataEqual(existingCategory, categoryRequest)) {
-            throw new NoChangesMadeException("Category entry was not updated as no changes of entry were made.");
+            throw new NoChangesMadeException("Category entry was not updated as no changes of entry were made");
         }
 
         existingCategory.setName(categoryRequest.getName().trim());
@@ -55,9 +59,9 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    private Category getCategoryByIdOrThrow(Long id) {
+    public Category getCategoryByIdOrThrow(Long id) {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found by id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Category not found by ID: " + id));
     }
 
     private boolean checkIfCategoryExists(String name) {
