@@ -2,6 +2,7 @@ package com.roze.book_recommendation_app.service;
 
 import com.roze.book_recommendation_app.dto.request.LikeRequest;
 import com.roze.book_recommendation_app.dto.response.LikeResponse;
+import com.roze.book_recommendation_app.exception.BookAlreadyLiked;
 import com.roze.book_recommendation_app.mapper.LikeMapper;
 import com.roze.book_recommendation_app.persistance.BookRepository;
 import com.roze.book_recommendation_app.persistance.LikeRepository;
@@ -38,6 +39,10 @@ public class LikeService {
     public LikeResponse likeBook(LikeRequest likeRequest) {
         User user = getUserByIdOrThrow(likeRequest.getUserId());
         Book book = getBookByIdOrThrow(likeRequest.getBookId());
+
+        if(likeRepository.existsByBookIdAndUserId(book.getId(), user.getId())) {
+            throw new BookAlreadyLiked(String.format("Book %s already is liked by user", book.getTitle()));
+        }
 
         Like likeToSave = likeMapper.requestToLike(user, book);
         Like savedLike = likeRepository.save(likeToSave);
