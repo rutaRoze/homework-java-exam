@@ -61,6 +61,6 @@ public class CommentController {
             @Min(1) @PathVariable Long id) {
         commentService.deleteCommentById(id);
 
-        return ResponseEntity.ok(String.format("Comment by ID %d was successfully deleted from data base", id));
+        return ResponseEntity.ok(String.format("Comment by ID %d was successfully deleted", id));
     }
 }
