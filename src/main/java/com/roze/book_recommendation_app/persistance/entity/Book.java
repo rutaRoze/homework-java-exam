@@ -1,6 +1,7 @@
 package com.roze.book_recommendation_app.persistance.entity;
 
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,11 +9,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -45,4 +50,17 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private Category category;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Comment> commentList = new ArrayList<>();
+
+    public void addComment(Comment comment) {
+        commentList.add(comment);
+        comment.setBook(this);
+    }
+
+    public void removeComment(Comment comment) {
+        commentList.remove(comment);
+        comment.setBook(null);
+    }
 }

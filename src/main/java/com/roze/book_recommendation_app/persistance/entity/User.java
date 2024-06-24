@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -17,9 +19,9 @@ import java.util.UUID;
 @Table(name = "`user`")
 public class User {
     @Id
-    @Column(name = "uuid", unique = true, updatable = false, nullable = false)
+    @Column(name = "id", unique = true, updatable = false, nullable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    private UUID id;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -36,6 +38,19 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comment> commentList = new ArrayList<>();
+
+    public void addComment(Comment comment) {
+        commentList.add(comment);
+        comment.setUser(this);
+    }
+
+    public void removeComment(Comment comment) {
+        commentList.remove(comment);
+        comment.setUser(null);
+    }
 
     public void setDefaultRole() {
         role = Role.USER;
