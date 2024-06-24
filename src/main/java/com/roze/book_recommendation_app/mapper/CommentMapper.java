@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CommentMapper {
-    public Comment requestToComment(CommentRequest commentRequest, Book book, User user) {
+    public Comment requestToComment(CommentRequest commentRequest, User user, Book book) {
         return Comment.builder()
                 .user(user)
                 .book(book)
