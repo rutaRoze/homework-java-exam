@@ -54,6 +54,9 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    private List<Like> likeList = new ArrayList<>();
+
     public void addComment(Comment comment) {
         commentList.add(comment);
         comment.setBook(this);
@@ -62,5 +65,15 @@ public class Book {
     public void removeComment(Comment comment) {
         commentList.remove(comment);
         comment.setBook(null);
+    }
+
+    public void addLike(Like like) {
+        likeList.add(like);
+        like.setBook(this);
+    }
+
+    public void removeLike(Like like) {
+        likeList.remove(like);
+        like.setBook(null);
     }
 }
