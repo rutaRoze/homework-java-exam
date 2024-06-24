@@ -56,6 +56,21 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
+    public List<BookResponse> findBooksByCategory(String categoryName) {
+        Category category = categoryRepository.findByNameIgnoreCase(categoryName.trim())
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Category by %s name not found", categoryName)));
+
+        return bookRepository.findByCategory(category).stream()
+                .map(book -> bookMapper.bookToResponse(book))
+                .collect(Collectors.toList());
+    }
+
+    public List<BookResponse> findBooksByTitle(String bookName) {
+        return bookRepository.findByTitleIgnoreCase(bookName.trim()).stream()
+                .map(book -> bookMapper.bookToResponse(book))
+                .collect(Collectors.toList());
+    }
+
     public BookResponse updateBookById(Long id, BookRequest bookRequest) {
         Book existingBook = getBookByIdOrThrow(id);
         Category category = categoryService.getCategoryByIdOrThrow(bookRequest.getCategoryId());
@@ -65,7 +80,7 @@ public class BookService {
         }
 
         if (!existingBook.getIsbn().equals(bookRequest.getIsbn()) && (checkIfIsbnExists(bookRequest.getIsbn()))) {
-                throw new CategoryAlreadyExist(String.format("Book by ISBN %s already exists", bookRequest.getIsbn()));
+            throw new CategoryAlreadyExist(String.format("Book by ISBN %s already exists", bookRequest.getIsbn()));
         }
 
         updateBookData(existingBook, bookRequest, category);

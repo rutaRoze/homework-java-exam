@@ -5,6 +5,7 @@ import com.roze.book_recommendation_app.dto.response.BookResponse;
 import com.roze.book_recommendation_app.service.BookService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -50,9 +52,9 @@ public class BookController {
 
     @GetMapping()
     public ResponseEntity<List<BookResponse>> getAllBooks() {
-        List<BookResponse> userList = bookService.findAllBooks();
+        List<BookResponse> bookList = bookService.findAllBooks();
 
-        return ResponseEntity.ok(userList);
+        return ResponseEntity.ok(bookList);
     }
 
     @PutMapping("/{id}")
@@ -70,5 +72,21 @@ public class BookController {
         bookService.deleteBookById(id);
 
         return ResponseEntity.ok(String.format("Book by ID %d was successfully deleted from data base", id));
+    }
+
+    @GetMapping("/category")
+    public ResponseEntity<List<BookResponse>> getBooksByCategory(
+            @RequestParam("category") @NotBlank String categoryName) {
+        List<BookResponse> bookListByCategory = bookService.findBooksByCategory(categoryName);
+
+        return ResponseEntity.ok(bookListByCategory);
+    }
+
+    @GetMapping("/title")
+    public ResponseEntity<List<BookResponse>> getBooksByTitle(
+            @RequestParam("title") @NotBlank String bookTitle) {
+        List<BookResponse> bookListByName = bookService.findBooksByTitle(bookTitle);
+
+        return ResponseEntity.ok(bookListByName);
     }
 }
