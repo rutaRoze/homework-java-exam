@@ -49,6 +49,11 @@ public class ApplicationExceptionHandler {
         return buildResponse(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(BookAlreadyLiked.class)
+    public ResponseEntity<Object> handle(BookAlreadyLiked ex) {
+        return buildResponse(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> handle(HttpMessageNotReadableException ex) {
         return buildResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
