@@ -62,6 +62,10 @@ public class LikeService {
                 .collect(Collectors.toList());
     }
 
+    public int countLikesByBook(Long id) {
+        return likeRepository.countByBookId(id);
+    }
+
     @Transactional
     public void unlikeBook(LikeRequest likeRequest) {
         User user = getUserByIdOrThrow(likeRequest.getUserId());
