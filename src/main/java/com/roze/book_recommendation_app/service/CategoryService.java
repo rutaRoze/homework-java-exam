@@ -11,6 +11,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CategoryService {
 
@@ -39,6 +42,12 @@ public class CategoryService {
         Category category = getCategoryByIdOrThrow(id);
 
         return categoryMapper.categoryToCategoryResponse(category);
+    }
+
+    public List<CategoryResponse> findAllCategories() {
+        return categoryRepository.findAll().stream()
+                .map(category -> categoryMapper.categoryToCategoryResponse(category))
+                .collect(Collectors.toList());
     }
 
     public CategoryResponse updateCategoryById(Long id, CategoryRequest categoryRequest) {
