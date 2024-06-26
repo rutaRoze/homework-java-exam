@@ -3,6 +3,7 @@ package com.roze.book_recommendation_app.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,18 +28,11 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(requests -> {
                             requests.anyRequest().permitAll();
+//                            requests.requestMatchers("/h2-console/**").permitAll();
 //                            requests.requestMatchers
-//                                    (HttpMethod.POST, "/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/appointments").permitAll();
+//                                    (HttpMethod.POST, "/auth/register", "/auth/login").permitAll();
 //                            requests.requestMatchers
-//                                    (HttpMethod.GET, "/api/v1/users/{id}", "/api/v1/appointments/**").permitAll();
-//                            requests.requestMatchers
-//                                    (HttpMethod.PUT, "/api/v1/users/**", "/api/v1/appointments/**").permitAll();
-//                            requests.requestMatchers
-//                                    (HttpMethod.DELETE, "/api/v1/users/**", "/api/v1/appointments/**").hasAnyAuthority("VET");
-//                            requests.requestMatchers
-//                                    (HttpMethod.GET, "api/v1/users").hasAnyAuthority("VET");
-//                            requests.requestMatchers
-//                                    (HttpMethod.POST, "/api/v1/users").hasAnyAuthority("VET");
+//                                    ("/comment/**", "/like/**, /category/**, /book/**").permitAll();
 //
 //                            requests.anyRequest().authenticated();
                         }
