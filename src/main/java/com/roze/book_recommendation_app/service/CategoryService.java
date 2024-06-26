@@ -5,7 +5,9 @@ import com.roze.book_recommendation_app.dto.response.CategoryResponse;
 import com.roze.book_recommendation_app.exception.CategoryAlreadyExist;
 import com.roze.book_recommendation_app.exception.NoChangesMadeException;
 import com.roze.book_recommendation_app.mapper.CategoryMapper;
+import com.roze.book_recommendation_app.persistance.BookRepository;
 import com.roze.book_recommendation_app.persistance.CategoryRepository;
+import com.roze.book_recommendation_app.persistance.entity.Book;
 import com.roze.book_recommendation_app.persistance.entity.Category;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,14 @@ public class CategoryService {
     CategoryRepository categoryRepository;
     CategoryMapper categoryMapper;
 
+    BookRepository bookRepository;
+
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryMapper categoryMapper,
+                           BookRepository bookRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryMapper = categoryMapper;
+        this.bookRepository = bookRepository;
     }
 
     public CategoryResponse saveCategory(CategoryRequest categoryRequest) {
@@ -65,6 +71,11 @@ public class CategoryService {
 
     public void deleteCategoryById(Long id) {
         getCategoryByIdOrThrow(id);
+
+        List<Book> bookList = bookRepository.findAllByCategoryId(id);
+        bookList.forEach(book -> book.setCategory(null));
+        bookRepository.saveAll(bookList);
+
         categoryRepository.deleteById(id);
     }
 
